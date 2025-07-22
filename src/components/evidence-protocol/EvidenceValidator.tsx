@@ -1,0 +1,126 @@
+import React, { useState } from 'react';
+import { EvidenceItem } from '../../types';
+
+interface EvidenceValidatorProps {
+  evidence: EvidenceItem[];
+  onAddEvidence: (evidence: EvidenceItem) => void;
+}
+
+export const EvidenceValidator: React.FC<EvidenceValidatorProps> = ({ evidence, onAddEvidence }) => {
+  const [newEvidence, setNewEvidence] = useState<Partial<EvidenceItem>>({
+    type: 'client-data',
+    source: '',
+    data: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newEvidence.source && newEvidence.data) {
+      onAddEvidence({
+        id: Date.now().toString(),
+        type: newEvidence.type as EvidenceItem['type'],
+        source: newEvidence.source,
+        validated: false,
+        timestamp: new Date(),
+        data: newEvidence.data
+      });
+      setNewEvidence({ type: 'client-data', source: '', data: '' });
+    }
+  };
+
+  const getTypeColor = (type: EvidenceItem['type']) => {
+    const colors = {
+      'client-data': 'bg-blue-100 text-blue-800',
+      'market-analysis': 'bg-purple-100 text-purple-800',
+      'historical-performance': 'bg-green-100 text-green-800',
+      'benchmark': 'bg-yellow-100 text-yellow-800'
+    };
+    return colors[type];
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Evidence-First Protocol</h2>
+      
+      <form onSubmit={handleSubmit} className="mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Evidence Type
+            </label>
+            <select
+              value={newEvidence.type}
+              onChange={(e) => setNewEvidence({ ...newEvidence, type: e.target.value as EvidenceItem['type'] })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="client-data">Client Data</option>
+              <option value="market-analysis">Market Analysis</option>
+              <option value="historical-performance">Historical Performance</option>
+              <option value="benchmark">Benchmark</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Source
+            </label>
+            <input
+              type="text"
+              value={newEvidence.source}
+              onChange={(e) => setNewEvidence({ ...newEvidence, source: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Client CRM, Market Report"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Data/Description
+            </label>
+            <input
+              type="text"
+              value={newEvidence.data}
+              onChange={(e) => setNewEvidence({ ...newEvidence, data: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Evidence details"
+            />
+          </div>
+        </div>
+        
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Add Evidence
+        </button>
+      </form>
+
+      <div className="border-t pt-4">
+        <h3 className="font-semibold text-gray-700 mb-3">Validated Evidence</h3>
+        {evidence.length === 0 ? (
+          <p className="text-gray-500 text-sm">No evidence added yet. All ROI calculations require validated evidence.</p>
+        ) : (
+          <div className="space-y-3">
+            {evidence.map((item) => (
+              <div key={item.id} className="border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(item.type)}`}>
+                    {item.type.replace('-', ' ').toUpperCase()}
+                  </span>
+                  <span className={`text-xs ${item.validated ? 'text-green-600' : 'text-orange-600'}`}>
+                    {item.validated ? 'Validated' : 'Pending Validation'}
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-gray-700">Source: {item.source}</p>
+                <p className="text-sm text-gray-600 mt-1">{item.data}</p>
+                <p className="text-xs text-gray-400 mt-2">
+                  Added: {new Date(item.timestamp).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

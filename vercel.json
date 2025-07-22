@@ -1,0 +1,36 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "framework": "create-react-app",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Constitutional-Compliance",
+          "value": "enforced"
+        },
+        {
+          "key": "X-Service-Boundary",
+          "value": "tier-based"
+        },
+        {
+          "key": "X-Evidence-Protocol",
+          "value": "required"
+        },
+        {
+          "key": "X-Professional-Standards",
+          "value": "business-optimization"
+        },
+        {
+          "key": "X-Quality-Assurance",
+          "value": "monitored"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "REACT_APP_CONSTITUTIONAL_MODE": "enforced",
+    "REACT_APP_COMPLIANCE_LEVEL": "professional"
+  }
+}
