@@ -40,7 +40,27 @@ export const EvidenceValidator: React.FC<EvidenceValidatorProps> = ({ evidence, 
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Evidence-First Protocol</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Evidence-First Protocol</h2>
+        <div className="flex items-center">
+          <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+          <span className="text-sm text-gray-600 font-medium">REQUIRED</span>
+        </div>
+      </div>
+      
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div className="flex items-center">
+          <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          <div>
+            <p className="text-sm text-red-800 font-semibold mb-1">CONSTITUTIONAL REQUIREMENT</p>
+            <p className="text-sm text-red-700">
+              All ROI calculations, projections, and business recommendations MUST be backed by validated client data and evidence. No estimates without proof.
+            </p>
+          </div>
+        </div>
+      </div>
       
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -96,9 +116,21 @@ export const EvidenceValidator: React.FC<EvidenceValidatorProps> = ({ evidence, 
       </form>
 
       <div className="border-t pt-4">
-        <h3 className="font-semibold text-gray-700 mb-3">Validated Evidence</h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-gray-700">Evidence Repository</h3>
+          <div className="flex items-center">
+            <span className="text-sm text-gray-500 mr-2">Items: {evidence.length}</span>
+            <div className={`w-2 h-2 rounded-full ${evidence.length > 0 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+          </div>
+        </div>
         {evidence.length === 0 ? (
-          <p className="text-gray-500 text-sm">No evidence added yet. All ROI calculations require validated evidence.</p>
+          <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p className="text-gray-600 font-medium">No Evidence Submitted</p>
+            <p className="text-gray-500 text-sm mt-1">⚠️ Constitutional Violation: All ROI calculations require validated evidence</p>
+          </div>
         ) : (
           <div className="space-y-3">
             {evidence.map((item) => (
