@@ -44,3 +44,65 @@ export interface ConstitutionalValidation {
   violations: string[];
   recommendations: string[];
 }
+
+export interface QuestionnaireResponse {
+  id: string;
+  phase: number;
+  question: string;
+  answer: string;
+  timestamp: Date;
+}
+
+export interface Phase1Data {
+  businessContext: string;
+  primaryChallenges: string;
+  currentSolutions: string;
+  keyStakeholders: string;
+  successMetrics: string;
+  timeline: string;
+}
+
+export interface PainPoint {
+  stage: string;
+  description: string;
+  impact: 'high' | 'medium' | 'low';
+  frequency: 'daily' | 'weekly' | 'monthly' | 'quarterly';
+  cost: string;
+}
+
+export interface Phase2Data {
+  painPoints: PainPoint[];
+  priorityMatrix: Record<string, number>;
+  businessImpact: string;
+  resourceConstraints: string;
+}
+
+export interface Phase3Data {
+  budgetRange: string;
+  investmentTimeframe: string;
+  decisionMakers: string;
+  previousInvestments: string;
+  expectedROI: string;
+  evidenceRequirements: string;
+}
+
+export interface ClientAssessment {
+  clientId: string;
+  phase1: Phase1Data | null;
+  phase2: Phase2Data | null;
+  phase3: Phase3Data | null;
+  currentPhase: number;
+  serviceTier: keyof typeof import('../constants').SERVICE_TIERS | null;
+  roiAssessment: ROIAssessment | null;
+  completedAt: Date | null;
+}
+
+export interface ROIAssessment {
+  projectedValue: number;
+  investmentRequired: number;
+  timeToValue: number;
+  confidenceLevel: number;
+  evidenceSources: EvidenceItem[];
+  assumptions: string[];
+  recommendations: string[];
+}

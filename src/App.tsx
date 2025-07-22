@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AssessmentFlow } from './components/flow-controller/AssessmentFlow';
 import { ComplianceMonitor } from './components/constitutional/ComplianceMonitor';
 import { ServiceTierDisplay } from './components/service-boundary/ServiceTierDisplay';
 import { EvidenceValidator } from './components/evidence-protocol/EvidenceValidator';
@@ -7,7 +8,10 @@ import { QualityDashboard } from './components/quality-assurance/QualityDashboar
 import { ComplianceStatus, EvidenceItem, QualityMetric, ConstitutionalValidation, BusinessPhase } from './types';
 import { SERVICE_TIERS } from './constants';
 
+type AppMode = 'client' | 'admin';
+
 function App() {
+  const [appMode, setAppMode] = useState<AppMode>('client');
   const [selectedTier, setSelectedTier] = useState<keyof typeof SERVICE_TIERS>('advisory');
   const [currentPhase, setCurrentPhase] = useState(1);
   const [evidence, setEvidence] = useState<EvidenceItem[]>([]);
@@ -52,6 +56,12 @@ function App() {
     setEvidence([...evidence, { ...newEvidence, validated: true }]);
   };
 
+  // Client-facing mode - show the assessment flow
+  if (appMode === 'client') {
+    return <AssessmentFlow onViewAdminDashboard={() => setAppMode('admin')} />;
+  }
+
+  // Admin dashboard mode - show the compliance dashboard
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b">
@@ -82,6 +92,12 @@ function App() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => setAppMode('client')}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+              >
+                View Client Experience
+              </button>
               <div className="text-right">
                 <span className="text-sm text-gray-500 block">Constitutional Compliance</span>
                 <div className="flex items-center justify-end mt-1">
