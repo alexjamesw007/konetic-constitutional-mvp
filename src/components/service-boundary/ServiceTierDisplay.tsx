@@ -26,7 +26,7 @@ export const ServiceTierDisplay: React.FC<ServiceTierDisplayProps> = ({ selected
           >
             <h3 className="text-lg font-bold text-gray-800 mb-2">{tier.name}</h3>
             <p className="text-2xl font-bold text-blue-600 mb-1">{tier.price}</p>
-            {tier.range && (
+            {'range' in tier && tier.range && (
               <p className="text-sm text-gray-500 mb-3">{tier.range}</p>
             )}
             <p className="text-sm text-gray-600 mb-4">{tier.description}</p>
